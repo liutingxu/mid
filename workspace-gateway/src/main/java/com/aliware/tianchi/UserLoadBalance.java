@@ -1,10 +1,12 @@
 package com.aliware.tianchi;
 
+import com.aliware.tianchi.strategy.TestLoadBalanceStrategy;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.rpc.Invocation;
 import org.apache.dubbo.rpc.Invoker;
 import org.apache.dubbo.rpc.RpcException;
 import org.apache.dubbo.rpc.cluster.LoadBalance;
+import org.apache.dubbo.rpc.cluster.loadbalance.AbstractLoadBalance;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,8 +21,11 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class UserLoadBalance implements LoadBalance {
 
+    private AbstractLoadBalance loadBalance=new TestLoadBalanceStrategy();
+
     @Override
     public <T> Invoker<T> select(List<Invoker<T>> invokers, URL url, Invocation invocation) throws RpcException {
-        return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
+//        return invokers.get(ThreadLocalRandom.current().nextInt(invokers.size()));
+        return loadBalance.select(invokers,url,invocation);
     }
 }
