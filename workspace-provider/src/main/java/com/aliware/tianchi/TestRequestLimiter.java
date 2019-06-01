@@ -1,5 +1,7 @@
 package com.aliware.tianchi;
 
+import org.apache.dubbo.common.logger.Logger;
+import org.apache.dubbo.common.logger.LoggerFactory;
 import org.apache.dubbo.remoting.exchange.Request;
 import org.apache.dubbo.remoting.transport.RequestLimiter;
 
@@ -11,6 +13,7 @@ import org.apache.dubbo.remoting.transport.RequestLimiter;
  * 在提交给后端线程池之前的扩展，可以用于服务端控制拒绝请求
  */
 public class TestRequestLimiter implements RequestLimiter {
+    private static final Logger logger= LoggerFactory.getLogger(TestRequestLimiter.class);
 
     /**
      * @param request 服务请求
@@ -20,6 +23,8 @@ public class TestRequestLimiter implements RequestLimiter {
      */
     @Override
     public boolean tryAcquire(Request request, int activeTaskCount) {
+        //logger.info("Provide actveTaskCount="+activeTaskCount);
+
         return true;
     }
 
