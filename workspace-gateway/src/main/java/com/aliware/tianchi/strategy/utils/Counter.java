@@ -42,11 +42,15 @@ public class Counter{
 
 
     public int sum(){
-        return Arrays.stream(counter).sum();
+        return Arrays.stream(counter).filter(value->{
+            return value>0;
+        }).sum();
     }
 
     public int max(){
-        return Arrays.stream(counter).max().orElse(0);
+        return Arrays.stream(counter).filter(v->{
+            return v>0;
+        }).max().orElse(0);
 
     }
 
@@ -55,9 +59,16 @@ public class Counter{
 //            return;
 //        }
         int index=threadLocal.get();
-        if(counter[index]>0){
+        if(counter[index]>0 && counter[index]<=1000){
             counter[index]=counter[index]-500;
         }
+        else if(counter[index]>0){
+            counter[index]=counter[index]>>>2;
+        }
+
+//        for(int i=0;i<length;i++){
+//            logger.info("counter["+i+"]="+counter[i]);
+//        }
     }
 
     public synchronized void increase(){
@@ -70,9 +81,9 @@ public class Counter{
         }
     }
 
-    public void resetMin(){
+    public synchronized void resetMin(){
         int min=Arrays.stream(counter).min().orElse(0);
-        if(min==0){
+        if(min<=0){
             int secondMin=Arrays.stream(counter).filter(value -> {
                 return value>0;
             }).min().orElse(0);
@@ -83,6 +94,14 @@ public class Counter{
                 }
             }
         }
+
+        int max=Arrays.stream(counter).max().orElse(0);
+        if(max>=(Integer.MAX_VALUE>>>2)){
+            for(int i=0;i<length;i++){
+                counter[i]=counter[i]>>>2;
+            }
+        }
+
     }
 
     public int getIndexRadomly(){
