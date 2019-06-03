@@ -37,7 +37,7 @@ public class Counter{
 
     private int length;
     private int[] counter;
-    private ThreadLocal<Integer> threadLocal=new ThreadLocal<>();
+    private ThreadLocal<Integer> threadLocal;
     private Timer timer = new Timer();
 
 
@@ -59,6 +59,7 @@ public class Counter{
 //            return;
 //        }
         int index=threadLocal.get();
+        logger.info("decrease index="+index);
         if(counter[index]>0 && counter[index]<=1000){
             counter[index]=counter[index]-500;
         }
@@ -75,7 +76,9 @@ public class Counter{
 //        if(!UserLoadBalance.isDynamicCount()){
 //            return;
 //        }
+
         int index=threadLocal.get();
+        logger.info("increase index="+index);
         if(counter[index]<Integer.MAX_VALUE){
             counter[index]++;
         }
