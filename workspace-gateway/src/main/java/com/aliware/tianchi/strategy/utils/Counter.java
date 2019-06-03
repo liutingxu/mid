@@ -37,7 +37,7 @@ public class Counter{
 
     private int length;
     private int[] counter;
-    private ThreadLocal<Integer> threadLocal;
+    private ThreadLocal<Integer> threadLocal=new ThreadLocal<>();
     private Timer timer = new Timer();
 
 
