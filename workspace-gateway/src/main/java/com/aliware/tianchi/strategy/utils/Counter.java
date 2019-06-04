@@ -109,27 +109,35 @@ public class Counter{
 
     public int getIndexRadomly(){
 //        logger.info("Counter randomly select start");
-        int randomValue= ThreadLocalRandom.current().nextInt(sum());
+        int sum=sum();
+
 //        logger.info("Counter randomly value="+randomValue);
 
         int selectedIndex=-1;
         int maxWeight=max();
         int maxIndex=-1;
-        for (int i = 0; i < length; i++) {
-            if(counter[i]<=0){
-                continue;
+
+        if(sum>0) {
+            int randomValue = ThreadLocalRandom.current().nextInt();
+            for (int i = 0; i < length; i++) {
+                if (counter[i] <= 0) {
+                    continue;
+                }
+                int offset = counter[i] - randomValue;
+                if (offset < 0) {
+                    selectedIndex = i;
+                }
+                if (counter[i] == maxWeight) {
+                    maxIndex = i;
+                }
             }
-            int offset = counter[i]-randomValue;
-            if (offset < 0) {
-                selectedIndex=i;
-            }
-            if(counter[i]==maxWeight){
-                maxIndex=i;
+
+            if (selectedIndex == -1) {
+                selectedIndex = maxIndex;
             }
         }
-
-        if(selectedIndex==-1){
-            selectedIndex=maxIndex;
+        else{
+            selectedIndex=2;
         }
         threadLocal.set(selectedIndex);
 //        logger.info("Counter randomly select finish" + selectedIndex);
