@@ -23,7 +23,7 @@ public class TestClientFilter implements Filter {
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try{
             Result result = invoker.invoke(invocation);
-            if(result.hasException()){
+            if(result.hasException() || result.getValue()==null){
                 Counter.getInstance().decrease();
 
             }

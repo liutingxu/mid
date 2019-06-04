@@ -75,7 +75,9 @@ public class Counter{
 //        if(!UserLoadBalance.isDynamicCount()){
 //            return;
 //        }
+
         int index=threadLocal.get();
+        logger.info("increase index="+index);
         if(counter[index]<Integer.MAX_VALUE){
             counter[index]++;
         }
