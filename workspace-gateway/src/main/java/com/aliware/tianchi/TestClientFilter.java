@@ -4,6 +4,8 @@ import com.aliware.tianchi.strategy.DynamicCountLoadBalance;
 import com.aliware.tianchi.strategy.utils.Counter;
 import org.apache.dubbo.common.Constants;
 import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.common.logger.Logger;
+import org.apache.dubbo.common.logger.LoggerFactory;
 import org.apache.dubbo.rpc.Filter;
 import org.apache.dubbo.rpc.Invocation;
 import org.apache.dubbo.rpc.Invoker;
@@ -19,11 +21,16 @@ import org.apache.dubbo.rpc.RpcException;
  */
 @Activate(group = Constants.CONSUMER)
 public class TestClientFilter implements Filter {
+
+    private static final Logger logger= LoggerFactory.getLogger(TestClientFilter.class);
+
+
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try{
             Result result = invoker.invoke(invocation);
-            if(result.hasException() || result.getValue()==null){
+            if(result.hasException() || result.getValue()==null || result.getValue().equals("")){
+                logger.info("Consumer receive value = "+result.getValue());
                 Counter.getInstance().decrease();
 
             }
