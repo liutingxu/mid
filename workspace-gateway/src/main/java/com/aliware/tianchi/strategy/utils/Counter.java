@@ -61,7 +61,7 @@ public class Counter{
         int index=threadLocal.get();
         logger.info("decrease index="+index);
         if(counter[index]>0 && counter[index]<=1000){
-            counter[index]=counter[index]-500;
+            counter[index]=counter[index]-200;
         }
         else if(counter[index]>0){
             counter[index]=counter[index]>>>2;
@@ -89,7 +89,7 @@ public class Counter{
         if(min<=0){
             int secondMin=Arrays.stream(counter).filter(value -> {
                 return value>0;
-            }).min().orElse(0);
+            }).min().orElse(500);
 
             for(int i=0;i<length;i++){
                 if(counter[i]==min){
