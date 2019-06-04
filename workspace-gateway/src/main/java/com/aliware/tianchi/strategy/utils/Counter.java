@@ -59,11 +59,11 @@ public class Counter{
 //            return;
 //        }
         int index=threadLocal.get();
-        if(counter[index]>0 && counter[index]<=1000){
-            counter[index]=counter[index]-500;
-        }
-        else if(counter[index]>0){
+        if(counter[index]>0){
             counter[index]=counter[index]>>>2;
+        }
+        else{
+            counter[index]=1;
         }
 
 //        for(int i=0;i<length;i++){
@@ -107,7 +107,7 @@ public class Counter{
     public int getIndexRadomly(){
 //        logger.info("Counter randomly select start");
         int randomValue= ThreadLocalRandom.current().nextInt(sum());
-//        logger.info("Counter randomly value="+randomValue);
+        logger.info("Counter randomly value="+randomValue);
 
         int selectedIndex=-1;
         int maxWeight=max();
@@ -129,7 +129,7 @@ public class Counter{
             selectedIndex=maxIndex;
         }
         threadLocal.set(selectedIndex);
-//        logger.info("Counter randomly select finish" + selectedIndex);
+        logger.info("Counter randomly select finish" + selectedIndex);
         return selectedIndex;
     }
 }
