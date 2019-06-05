@@ -59,11 +59,11 @@ public class Counter{
 //            return;
 //        }
         int index=threadLocal.get();
-        if(counter[index]>0){
+        if(counter[index]>2){
             counter[index]=counter[index]>>>2;
         }
         else{
-            counter[index]=1;
+            counter[index]=200;
         }
 
 //        for(int i=0;i<length;i++){
