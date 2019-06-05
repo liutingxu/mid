@@ -128,9 +128,11 @@ public class Counter {
             if (selectedIndex == -1) {
                 selectedIndex = maxIndex;
             }
-        } else {
+        }
+        if(selectedIndex==-1) {
             selectedIndex = ThreadLocalRandom.current().nextInt(length);
         }
+
         threadLocal.set(selectedIndex);
         logger.info("Counter randomly select finish" + selectedIndex);
         return selectedIndex;
