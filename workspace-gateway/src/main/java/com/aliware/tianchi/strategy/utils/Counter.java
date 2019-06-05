@@ -59,12 +59,11 @@ public class Counter{
 //            return;
 //        }
         int index=threadLocal.get();
-        logger.info("decrease index="+index);
-        if(counter[index]>0 && counter[index]<=1000){
-            counter[index]=counter[index]-200;
-        }
-        else if(counter[index]>0){
+        if(counter[index]>0){
             counter[index]=counter[index]>>>2;
+        }
+        else{
+            counter[index]=1;
         }
 
 //        for(int i=0;i<length;i++){
@@ -89,7 +88,7 @@ public class Counter{
         if(min<=0){
             int secondMin=Arrays.stream(counter).filter(value -> {
                 return value>0;
-            }).min().orElse(500);
+            }).min().orElse(0);
 
             for(int i=0;i<length;i++){
                 if(counter[i]==min){
@@ -109,38 +108,30 @@ public class Counter{
 
     public int getIndexRadomly(){
 //        logger.info("Counter randomly select start");
-        int sum=sum();
-
-//        logger.info("Counter randomly value="+randomValue);
+        int randomValue= ThreadLocalRandom.current().nextInt(sum());
+        logger.info("Counter randomly value="+randomValue);
 
         int selectedIndex=-1;
         int maxWeight=max();
         int maxIndex=-1;
-
-        if(sum>0) {
-            int randomValue = ThreadLocalRandom.current().nextInt();
-            for (int i = 0; i < length; i++) {
-                if (counter[i] <= 0) {
-                    continue;
-                }
-                int offset = counter[i] - randomValue;
-                if (offset < 0) {
-                    selectedIndex = i;
-                }
-                if (counter[i] == maxWeight) {
-                    maxIndex = i;
-                }
+        for (int i = 0; i < length; i++) {
+            if(counter[i]<=0){
+                continue;
             }
-
-            if (selectedIndex == -1) {
-                selectedIndex = maxIndex;
+            int offset = counter[i]-randomValue;
+            if (offset < 0) {
+                selectedIndex=i;
+            }
+            if(counter[i]==maxWeight){
+                maxIndex=i;
             }
         }
-        else{
-            selectedIndex=2;
+
+        if(selectedIndex==-1){
+            selectedIndex=maxIndex;
         }
         threadLocal.set(selectedIndex);
-//        logger.info("Counter randomly select finish" + selectedIndex);
+        logger.info("Counter randomly select finish" + selectedIndex);
         return selectedIndex;
     }
 }
