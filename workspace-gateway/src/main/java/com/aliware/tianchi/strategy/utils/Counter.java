@@ -29,7 +29,7 @@ public class Counter {
             public void run() {
                 COUNTER.resetMin();
             }
-        }, 5000, 2000);
+        }, 2000, 1000);
         threadLocal = new ThreadLocal<>();
     }
 
