@@ -27,7 +27,7 @@ public class TestClientFilter implements Filter {
             Result result = invoker.invoke(invocation);
 
 //            if( !(result instanceof AsyncRpcResult)) {
-            checkResult(result, false);
+//            checkResult(result, false);
 //            }
             return result;
 
@@ -51,7 +51,7 @@ public class TestClientFilter implements Filter {
     @Override
     public Result onResponse(Result result, Invoker<?> invoker, Invocation invocation) {
 
-        checkResult(result, true);
+//        checkResult(result, true);
         return result;
     }
 
