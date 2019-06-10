@@ -348,9 +348,9 @@ com.aliware.tianchi.TestServerFilter
 
 - 配置 hosts，指向本地 IP ,或者将 internal-service 项目中的 `com.aliware.tianchi.netty.HttpProcessHandler#buildUrls` 相关地址修改为本地 IP,也可以在 `buildUrls` 中添加多个不同的 Provider 地址。
   ```
-  127.0.0.1 provider-small
-  127.0.0.1 provider-medium
-  127.0.0.1 provider-large
+  ${宿主机IP地址} provider-small
+  ${宿主机IP地址} provider-medium
+  ${宿主机IP地址} provider-large
   ```
 - 构建 demo 的 workspace 项目
 - 运行 `internal-service` 项目中的 `com.aliware.tianchi.MyProvider` 启动 Provider，为了模拟负载均衡场景，需要启动三个 Provider，分别指定启动参数 `-Dquota=large`、`-Dquota=medium`、`-Dquota=small`
@@ -369,12 +369,14 @@ wrk -t4 -c1024 -d60s -T5 --script=./wrk.lua --latency http://localhost:8087/invo
 
 ## 评测
 
-提交评测前，选手需要添加`middlewarerace2019`为要评测的代码仓库 reporter ，否则无法进行评测。
+提交评测前，选手需要添加`middleware2019`为要评测的代码仓库 reporter ，否则无法进行评测。
 
 ### 环境
 ![benchmark_architect](assets/benchmark_architect.png)
 
 所有程序均执行在 docker 中，docker 镜像由评测程序自动根据选手的代码仓库构建，不需要自行构建，若需要自行构建测试，请参考[docker](https://code.aliyun.com/middlewarerace2019/docker/tree/master)
+
+构建环境失败可先查阅 [FAQ](https://code.aliyun.com/middlewarerace2019/adaptive-loadbalance/blob/master/FAQ.md) 查找解决方案
 
 - Consumer ： 1 台 4c4g
 - Provider ： 3台
@@ -386,6 +388,20 @@ wrk -t4 -c1024 -d60s -T5 --script=./wrk.lua --latency http://localhost:8087/invo
   - 任意一个 Provider 的单机处理能力都小于总请求量。
   
 本地或 ecs 使用 docker 模拟真实评测可参考 [benchmarker](https://code.aliyun.com/middlewarerace2019/benchmarker)
+
+#### 环境和启动参数
+
+- JDK 版本： Openjdk 1.8.0_212
+- GC collector : Parallel Scavenge + Parallel Old
+- 宿主机 OS:  4.19.34-11.al7.x86_64
+- Docker 版本: 1.13.1
+
+| 程序 | 宿主机配置 | JVM参数 | Docker资源限制参数 |
+| :--: | :--------: | :------: |  :------: |
+|  consumer         | Intel Xeon(Skylake) Platinum 8163, 2.5 GHz,1.5 Gbps, 500k PPS | -Xms4G  -Xmx4G  |  -m 4g   |
+|  provider-small   | Intel Xeon(Skylake) Platinum 8163, 2.5 GHz,1.0 Gbps, 300k PPS | -Xms1G  -Xmx1G  |  --cpuset-cpus="0" -m 2g      |
+|  provider-medium  | Intel Xeon(Skylake) Platinum 8163, 2.5 GHz,1.5 Gbps, 500k PPS | -Xms2G  -Xmx2G  |  --cpuset-cpus="0,1" -m 4g    |
+|  provider-large   | Intel Xeon(Skylake) Platinum 8163, 2.5 GHz,1.5 Gbps, 500k PPS | -Xms3G  -Xmx3G  |  --cpuset-cpus="0,1,2" -m 6g  |
 
 ### 评测流程
 
