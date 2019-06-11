@@ -1,6 +1,7 @@
 package com.aliware.tianchi.strategy;
 
 import com.aliware.tianchi.strategy.utils.Counter;
+import com.aliware.tianchi.strategy.utils.LnCounter;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.logger.Logger;
 import org.apache.dubbo.common.logger.LoggerFactory;
@@ -19,7 +20,7 @@ public class DynamicCountLoadBalance extends AbstractLoadBalance {
     @Override
     protected <T> Invoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation) {
 
-        int i= Counter.getInstance().getIndexRadomly();
+        int i= LnCounter.getInstance().getIndexRadomly((List)invokers);
 //        logger.info("Dynamic Counter select "+i);
         return invokers.get(i);
     }
