@@ -21,8 +21,8 @@ public class LnCounter {
         requestCounter = new int[3];
         responseCounter = new int[3];
         for (int i = 0; i < length; i++) {
-            requestCounter[i] = 1;
-            responseCounter[i] = 1;
+            requestCounter[i] = 2;
+            responseCounter[i] = 2;
         }
 //        timer.schedule(new TimerTask() {
 //            @Override
