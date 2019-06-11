@@ -71,7 +71,7 @@ public class LnCounter {
         double[] snapshot = new double[requestCounter.length];
         double sum = 0.0;
         for (int i = 0; i < length; i++) {
-            snapshot[i] = Math.log1p(responseCounter[i]) / Math.log1p(requestCounter[i]);
+            snapshot[i] = (responseCounter[i]) / Math.log1p(requestCounter[i]);
             sum += snapshot[i];
         }
 
