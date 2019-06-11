@@ -34,7 +34,8 @@ public class TestClientFilter implements Filter {
             return result;
 
         } catch (Exception e) {
-            Counter.getInstance().decrease();
+            logger.error(e);
+            logger.info(e);
             throw e;
         }
 
