@@ -28,9 +28,11 @@ public class TestClientFilter implements Filter {
             LnCounter.getInstance().increaseRequest();
             Result result = invoker.invoke(invocation);
 
-//            if( !(result instanceof AsyncRpcResult)) {
-//            checkResult(result, false);
-//            }
+            if( !(result instanceof AsyncRpcResult)) {
+                logger.info("response check");
+
+                checkResult(result,false);
+            }
             return result;
 
         } catch (Exception e) {
@@ -42,9 +44,11 @@ public class TestClientFilter implements Filter {
     }
 
     private void checkResult(Result result, boolean isAsync) {
-        if (result.hasException() || ( isAsync && (result.getValue() == null || result.getValue().equals("")))) {
+        LnCounter.getInstance().decreaseRequest();
+        if (result.hasException() || ((result.getValue() == null || result.getValue().equals("")))) {
 //            logger.info("Consumer receive value = " + result.getValue() + (isAsync ? " async" : ""));
-            LnCounter.getInstance().decreaseRequest();
+            LnCounter.getInstance().decreaseResponse();
+
 
         } else {
             LnCounter.getInstance().increaseResponse();
@@ -53,10 +57,15 @@ public class TestClientFilter implements Filter {
 
     @Override
     public Result onResponse(Result result, Invoker<?> invoker, Invocation invocation) {
+
+        LnCounter.getInstance().decreaseRequest();
         if (result.hasException() || ( (result.getValue() == null || result.getValue().equals("")))) {
-            LnCounter.getInstance().decreaseRequest();
+            logger.info("onResponse check decrease");
+            LnCounter.getInstance().decreaseResponse();
 
         } else {
+            logger.info("onResponse check increase");
+
             LnCounter.getInstance().increaseResponse();
         }
         return result;

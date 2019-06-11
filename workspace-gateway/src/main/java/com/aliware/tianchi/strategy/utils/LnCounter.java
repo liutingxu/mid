@@ -21,8 +21,8 @@ public class LnCounter {
         requestCounter = new int[3];
         responseCounter = new int[3];
         for (int i = 0; i < length; i++) {
-            requestCounter[i] = 2;
-            responseCounter[i] = 2;
+            requestCounter[i] = 11;
+            responseCounter[i] = 11;
         }
 //        timer.schedule(new TimerTask() {
 //            @Override
@@ -38,7 +38,7 @@ public class LnCounter {
         return COUNTER;
     }
 
-    public void decreaseRequest() {
+    public synchronized void decreaseRequest() {
 
         int index = threadLocal.get();
         if (requestCounter[index] > 10) {
@@ -48,7 +48,7 @@ public class LnCounter {
         }
     }
 
-    public void increaseRequest() {
+    public synchronized void increaseRequest() {
 
         int index = threadLocal.get();
         if (requestCounter[index] < Integer.MAX_VALUE) {
@@ -58,8 +58,24 @@ public class LnCounter {
 
     public void increaseResponse() {
         int index = threadLocal.get();
+        logger.info("increase response count "+index);
         if (responseCounter[index] < Integer.MAX_VALUE) {
             responseCounter[index]++;
+        }
+    }
+
+    public synchronized void decreaseResponse() {
+        int index = threadLocal.get();
+        logger.info("decrease response count "+index);
+
+        if (responseCounter[index]>1000) {
+            responseCounter[index]=responseCounter[index]>>>2;
+        }
+        else if(responseCounter[index]>20){
+            responseCounter[index]--;
+        }
+        else{
+            responseCounter[index]=10;
         }
     }
 
@@ -87,7 +103,7 @@ public class LnCounter {
 
         }
 
-        logger.info("sum="+sum+", selectedIndex="+selectedIndex);
+        logger.info("sum="+sum+", selectedIndex="+selectedIndex+", requestCounter=["+requestCounter[0]+","+requestCounter[1]+","+requestCounter[2]+"], responseCounter=["+responseCounter[0]+","+responseCounter[1]+","+responseCounter[2]+"]");
         if (selectedIndex == -1) {
             selectedIndex = ThreadLocalRandom.current().nextInt(length);
         }
