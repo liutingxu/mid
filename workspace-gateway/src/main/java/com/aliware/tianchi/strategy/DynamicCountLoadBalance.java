@@ -20,7 +20,7 @@ public class DynamicCountLoadBalance extends AbstractLoadBalance {
     @Override
     protected <T> Invoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation) {
 
-        int i= LnCounter.getInstance().getIndexRadomly();
+        int i= LnCounter.getInstance().getIndexRadomly(invokers);
 //        logger.info("Dynamic Counter select "+i);
         return invokers.get(i);
     }
