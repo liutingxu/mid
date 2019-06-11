@@ -59,18 +59,18 @@ public class TestClientFilter implements Filter {
     public Result onResponse(Result result, Invoker<?> invoker, Invocation invocation) {
         logger.info("onResponse check begin");
         LnCounter.getInstance().decreaseRequest();
-        logger.info("onResponse decrease request finish");
+        System.out.println("onResponse decrease request finish");
 
         if (result.hasException() || result.getValue() == null || result.getValue().equals("")) {
-            logger.info("onResponse check decrease");
+            System.out.println("onResponse check decrease");
             LnCounter.getInstance().decreaseResponse();
 
         } else {
-            logger.info("onResponse check increase");
+            System.out.println("onResponse check increase");
 
             LnCounter.getInstance().increaseResponse();
         }
-        logger.info("onResponse check end");
+        System.out.println("onResponse check end");
         return result;
     }
 
