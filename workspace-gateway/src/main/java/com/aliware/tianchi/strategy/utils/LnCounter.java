@@ -71,24 +71,23 @@ public class LnCounter {
         double[] snapshot = new double[requestCounter.length];
         double sum = 0.0;
         for (int i = 0; i < length; i++) {
-            snapshot[i] = Math.log10(responseCounter[i]) / Math.log10(requestCounter[i]);
+            snapshot[i] = Math.log1p(responseCounter[i]) / Math.log1p(requestCounter[i]);
             sum += snapshot[i];
         }
-
 
         double randomValue = ThreadLocalRandom.current().nextDouble(sum);
 
         for (int i = 0; i < length; i++) {
 
             randomValue = randomValue - snapshot[i];
-            if (randomValue <= 0) {
+            if (randomValue <= 0.0) {
                 selectedIndex = i;
                 break;
             }
 
         }
 
-
+        logger.info("sum="+sum+", selectedIndex="+selectedIndex);
         if (selectedIndex == -1) {
             selectedIndex = ThreadLocalRandom.current().nextInt(length);
         }
