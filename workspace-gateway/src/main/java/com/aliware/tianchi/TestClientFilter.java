@@ -25,7 +25,7 @@ public class TestClientFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try {
-            LnCounter.getInstance().increaseRequest(invoker.getUrl().toServiceString());
+            LnCounter.getInstance().increaseRequest(invoker);
             Result result = invoker.invoke(invocation);
             logger.info("response got");
             if( !(result instanceof AsyncRpcResult)) {
