@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Counter {
 
     private static final Logger logger = LoggerFactory.getLogger(Counter.class);
-    private static Counter COUNTER = new Counter();
+    private static Counter COUNTER = null;
     private static Boolean IS_EFFECTIVE=false;
     private int length;
     private int[] counter;
