@@ -38,7 +38,7 @@ public class LnCounter {
         return COUNTER;
     }
 
-    public synchronized void decreaseRequest() {
+    public void decreaseRequest() {
 
         int index = threadLocal.get();
         if (requestCounter[index] > 10) {
@@ -48,7 +48,7 @@ public class LnCounter {
         }
     }
 
-    public synchronized void increaseRequest() {
+    public void increaseRequest() {
 
         int index = threadLocal.get();
         if (requestCounter[index] < Integer.MAX_VALUE) {
@@ -64,7 +64,7 @@ public class LnCounter {
         }
     }
 
-    public synchronized void decreaseResponse() {
+    public void decreaseResponse() {
         int index = threadLocal.get();
         logger.info("decrease response count "+index);
 
