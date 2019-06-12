@@ -97,12 +97,14 @@ public class LnCounter {
 
 
     public int getIndexRadomly(List<Invoker> invokers) {
+        if (this.invokers.size() == 0) {
 
-        synchronized (this.invokers) {
-            if (this.invokers.size() == 0) {
-                for(Invoker invoker:invokers){
+            synchronized (this.invokers) {
+                if (this.invokers.size() == 0) {
+                    for (Invoker invoker : invokers) {
 //                    logger.info("invoker id="+invoker.getUrl().toIdentityString());
-                    this.invokers.add(invoker.getUrl().toIdentityString());
+                        this.invokers.add(invoker.getUrl().toIdentityString());
+                    }
                 }
             }
         }
@@ -111,7 +113,7 @@ public class LnCounter {
 
         double maxWeight=0.0;
         for (int i = 0; i < length; i++) {
-            double snapshot = Math.log1p(responseCounter[i]) / Math.log1p(requestCounter[i]);
+            double snapshot = (responseCounter[i]) / Math.log1p(requestCounter[i]);
             if(snapshot>maxWeight){
                 selectedIndex=i;
                 maxWeight=snapshot;
