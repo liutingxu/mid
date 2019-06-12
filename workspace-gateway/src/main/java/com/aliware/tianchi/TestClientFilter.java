@@ -27,7 +27,7 @@ public class TestClientFilter implements Filter {
         try {
             LnCounter.getInstance().increaseRequest(invoker);
             Result result = invoker.invoke(invocation);
-            logger.info("response got");
+//            logger.info("response got");
             if( !(result instanceof AsyncRpcResult)) {
                 logger.info("response check");
 
