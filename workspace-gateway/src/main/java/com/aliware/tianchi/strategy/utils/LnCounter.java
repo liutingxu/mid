@@ -5,6 +5,7 @@ import org.apache.dubbo.common.logger.LoggerFactory;
 import org.apache.dubbo.rpc.Invoker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -108,24 +109,15 @@ public class LnCounter {
 
         int selectedIndex = -1;
 
-        double[] snapshot = new double[requestCounter.length];
-        double sum = 0.0;
+        double maxWeight=0.0;
         for (int i = 0; i < length; i++) {
-            snapshot[i] = (responseCounter[i]) / Math.log1p(requestCounter[i]);
-            sum += snapshot[i];
-        }
-
-        double randomValue = ThreadLocalRandom.current().nextDouble(sum);
-
-        for (int i = 0; i < length; i++) {
-
-            randomValue = randomValue - snapshot[i];
-            if (randomValue <= 0.0) {
-                selectedIndex = i;
-                break;
+            double snapshot = Math.log1p(responseCounter[i]) / Math.log1p(requestCounter[i]);
+            if(snapshot>maxWeight){
+                selectedIndex=i;
+                maxWeight=snapshot;
             }
-
         }
+
 
 //        logger.info("sum=" + sum + ", selectedIndex=" + selectedIndex + ", requestCounter=[" + requestCounter[0] + "," + requestCounter[1] + "," + requestCounter[2] + "], responseCounter=[" + responseCounter[0] + "," + responseCounter[1] + "," + responseCounter[2] + "]");
         if (selectedIndex == -1) {
