@@ -113,7 +113,7 @@ public class LnCounter {
 
         double maxWeight=0.0;
         for (int i = 0; i < length; i++) {
-            double snapshot = (responseCounter[i]) / Math.log1p(requestCounter[i]);
+            double snapshot = Math.log1p(responseCounter[i]) / Math.log1p(requestCounter[i]);
             if(snapshot>maxWeight){
                 selectedIndex=i;
                 maxWeight=snapshot;
